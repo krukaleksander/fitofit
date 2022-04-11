@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ExercisesModule } from './exercises/exercises.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AppService } from './app.service';
         PORT: Joi.number().default(4000),
       }),
     }),
+    ExercisesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
