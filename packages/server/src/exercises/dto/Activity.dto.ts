@@ -9,10 +9,6 @@ import {
 export class ActivityDto {
   @IsNotEmpty()
   @IsNumber()
-  activityID: number;
-
-  @IsNotEmpty()
-  @IsNumber()
   durationInMinutes: number;
 
   @IsNotEmpty()
