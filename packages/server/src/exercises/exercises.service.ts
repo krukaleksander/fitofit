@@ -20,7 +20,7 @@ export class ExercisesService {
       await this.exercisesRepository.save(activity);
       return { status: 200, msg: 'Dodano zadanie', activity };
     } catch (err) {
-      console.log(err);
+      return { status: 500, err };
     }
   }
 }
