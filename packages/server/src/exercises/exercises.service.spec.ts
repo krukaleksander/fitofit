@@ -17,5 +17,23 @@ describe('ExercisesService', () => {
     it(' / should return db of tasks"', () => {
       expect(service.getExercises()).toEqual(db);
     });
+    describe('validate Activity', () => {
+      it('accepts only validate data', function () {
+        const MOCK_REQUEST = {
+          activityID: 3,
+          exerciseID: 5,
+          userID: 10,
+          name: 'Jazda na rowerze',
+          start: new Date(),
+          durationInMinutes: 30,
+          isDone: true,
+        };
+        expect(service.addActivity(MOCK_REQUEST)).toEqual({
+          status: 200,
+          msg: 'Dodano zadanie',
+          activity: MOCK_REQUEST,
+        });
+      });
+    });
   });
 });
