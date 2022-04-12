@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  FormGroup,
   TextField,
   Typography,
 } from '@mui/material';
@@ -32,10 +31,10 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
   const validationSchema = yup.object({
     activity: yup.number().required('Activity is required'),
     startTime: yup
-      .date('Enter a start time')
+      .date()
       .min(new Date(), 'Cannot use past date')
       .required('Start time is required'),
-    duration: yup.number('Enter a duration').required('Duration is required'),
+    duration: yup.number().required('Duration is required'),
   });
 
   const formik = useFormik({
@@ -45,8 +44,49 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
       duration: '',
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: (values, { resetForm }) => {
+      const activity = activitiesList.find(
+        (activity) => activity.id === Number(values.activity),
+      );
+
+      if (!activity) {
+        return;
+      }
+
+      const request: IActivity = {
+        exerciseID: Number(values.activity),
+        userID: 1, // NOTE (hub33k): for now hardcoded
+        name: activity.name,
+        start: new Date(values.startTime),
+        durationInMinutes: Number(values.duration),
+        isDone: false,
+      };
+
+      console.log(request);
+
+      fetch(`${config.apiUrl}/exercises/new`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Something went wrong');
+          }
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      // TODO (hub33k): reset form properly
+      resetForm();
     },
   });
 
@@ -82,8 +122,14 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
               Add exercise
             </Typography>
 
-            {/* TODO (hub33k): replace FormGroup */}
-            <FormGroup sx={{ marginBottom: 4 }}>
+            <Box
+              sx={{
+                marginBottom: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                flexWrap: 'wrap',
+              }}
+            >
               <Autocomplete
                 disablePortal
                 id="activities"
@@ -114,9 +160,16 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
                   />
                 )}
               />
-            </FormGroup>
+            </Box>
 
-            <FormGroup sx={{ marginBottom: 4 }}>
+            <Box
+              sx={{
+                marginBottom: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                flexWrap: 'wrap',
+              }}
+            >
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label="Start time"
@@ -140,9 +193,16 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
                   )}
                 />
               </LocalizationProvider>
-            </FormGroup>
+            </Box>
 
-            <FormGroup sx={{ marginBottom: 4 }}>
+            <Box
+              sx={{
+                marginBottom: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                flexWrap: 'wrap',
+              }}
+            >
               <TextField
                 fullWidth
                 id="duration"
@@ -158,7 +218,7 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
                 }
                 helperText={formik.touched.duration && formik.errors.duration}
               />
-            </FormGroup>
+            </Box>
 
             <Button type="submit" variant="outlined" fullWidth>
               Add
