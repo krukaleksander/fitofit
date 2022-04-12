@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import config from '~/config';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import theme from '~/config/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,7 +14,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="description" content={`${config.app.name}`} />
       </Head>
 
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   );
 }
