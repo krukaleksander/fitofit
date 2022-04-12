@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { ExerciseFromServerDto } from './dto/ExerciseFromServer.dto';
 import { ActivityDto } from './dto/Activity.dto';
-import { HistoricalActivitiesDto } from '../../dist/exercises/dto/HistoricalActivities.dto';
 
 @Controller('exercises')
 export class ExercisesController {

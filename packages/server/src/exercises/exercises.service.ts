@@ -5,7 +5,7 @@ import { ActivityDto } from './dto/Activity.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ActivityEntity } from './activity.entity';
 import { Repository } from 'typeorm';
-import { HistoricalActivitiesDto } from '../../dist/exercises/dto/HistoricalActivities.dto';
+
 import { AllActivities } from './helpers/AllActivities';
 @Injectable()
 export class ExercisesService {
