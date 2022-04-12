@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { db as MOCKED_RESPONSE } from '../../tempdb/db';
+import { db as MOCKED_RESPONSE } from '../tempdb/db';
 import { ExerciseFromServerDto } from './dto/ExerciseFromServer.dto';
 import { ActivityDto } from './dto/Activity.dto';
 @Injectable()

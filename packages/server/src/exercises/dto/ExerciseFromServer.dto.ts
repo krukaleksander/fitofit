@@ -1,6 +1,4 @@
-import { IExerciseFromServer } from '../../../../common/src/interfaces';
-
-export class ExerciseFromServerDto implements IExerciseFromServer {
+export class ExerciseFromServerDto {
   id: number;
   name: string;
   cal: number;

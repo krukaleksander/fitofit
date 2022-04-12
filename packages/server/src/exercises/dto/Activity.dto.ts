@@ -1,4 +1,3 @@
-import { IActivity } from '../../../../common/src/interfaces';
 import {
   IsBoolean,
   IsDate,
@@ -7,7 +6,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class ActivityDto implements IActivity {
+export class ActivityDto {
   @IsNotEmpty()
   @IsNumber()
   activityID: number;
