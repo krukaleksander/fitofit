@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ActivityEntity } from './activity.entity';
 import { Repository } from 'typeorm';
 import { HistoricalActivitiesDto } from '../../dist/exercises/dto/HistoricalActivities.dto';
+import { AllActivities } from './helpers/AllActivities';
 @Injectable()
 export class ExercisesService {
   constructor(
@@ -28,23 +29,7 @@ export class ExercisesService {
   async getHistoricalActivities() {
     try {
       const allActivities = await this.exercisesRepository.find();
-      let totalCalories = 0;
-      let totalDuration = 0;
-      allActivities.forEach((activity: ActivityDto) => {
-        totalDuration += Math.floor(activity.durationInMinutes);
-        MOCKED_RESPONSE.find((exercise) => {
-          if (exercise.id === activity.exerciseID) {
-            totalCalories += Math.floor(exercise.cal * (totalDuration / 60));
-          }
-        });
-      });
-      const caloriesToBurgers = Math.floor(totalCalories / 655);
-      return {
-        totalCalories,
-        totalDuration,
-        caloriesToBurgers,
-        activities: allActivities,
-      };
+      return new AllActivities(allActivities, MOCKED_RESPONSE).init();
     } catch (err) {
       return { status: 500, err };
     }
