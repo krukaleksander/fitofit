@@ -1,17 +1,18 @@
-import * as React from 'react';
-import { FC, FormEvent, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   Autocomplete,
   Box,
   Button,
+  CircularProgress,
   FormGroup,
   TextField,
-  CircularProgress,
   Typography,
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { IExerciseFromServer } from 'common';
 import config from '~/config';
 
@@ -23,10 +24,30 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
   );
   const [activitiesListLoaded, setActivitiesListLoaded] = useState(false);
 
-  // Stuff to send to the server
-  const [activity, setActivity] = useState<number>(NaN);
-  const [startTime, setStartTime] = useState<Date | null>(null);
-  const [duration, setDuration] = useState<number>(NaN);
+  // ================================================================
+
+  const validationSchema = yup.object({
+    activity: yup.number().required('Activity is required'),
+    startTime: yup
+      .date('Enter a start time')
+      .min(new Date(), 'Cannot use past date')
+      .required('Start time is required'),
+    duration: yup.number('Enter a duration').required('Duration is required'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      activity: '',
+      startTime: '',
+      duration: '',
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      console.log(JSON.stringify(values, null, 2));
+    },
+  });
+
+  // ================================================================s
 
   useEffect(() => {
     getActivity();
@@ -39,20 +60,11 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
     }
   }, []);
 
-  // TODO (hub33k): add validation
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    console.log(activity);
-    console.log(startTime);
-    console.log(duration);
-  };
-
   return (
     <>
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={formik.handleSubmit}
         sx={{
           margin: 4,
         }}
@@ -63,6 +75,7 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
               Add exercise
             </Typography>
 
+            {/* TODO (hub33k): replace FormGroup */}
             <FormGroup sx={{ marginBottom: 4 }}>
               <Autocomplete
                 disablePortal
@@ -71,14 +84,27 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
                 getOptionLabel={(option) =>
                   `${option.name} (${option.cal} cal/h)`
                 }
-                isOptionEqualToValue={(option, value) => option.id === value.id}
                 onChange={(event, value) => {
-                  if (value) {
-                    setActivity(value?.id);
-                  }
+                  formik.setFieldValue('activity', value?.id);
                 }}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 renderInput={(params) => (
-                  <TextField {...params} label="Activity" />
+                  <TextField
+                    {...params}
+                    fullWidth
+                    id="activity"
+                    name="activity"
+                    label="Activity"
+                    // formik stuff
+                    value={formik.values.activity}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.activity && Boolean(formik.errors.activity)
+                    }
+                    helperText={
+                      formik.touched.activity && formik.errors.activity
+                    }
+                  />
                 )}
               />
             </FormGroup>
@@ -86,29 +112,48 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
             <FormGroup sx={{ marginBottom: 4 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
-                  renderInput={(props) => <TextField {...props} />}
                   label="Start time"
-                  value={startTime}
-                  onChange={(newValue) => {
-                    setStartTime(newValue);
+                  value={formik.values.startTime}
+                  onChange={(date) => {
+                    if (!date) return;
+                    formik.setFieldValue('startTime', date);
                   }}
+                  renderInput={(props) => (
+                    <TextField
+                      {...props}
+                      // formik stuff
+                      error={
+                        formik.touched.startTime &&
+                        Boolean(formik.errors.startTime)
+                      }
+                      helperText={
+                        formik.touched.startTime && formik.errors.startTime
+                      }
+                    />
+                  )}
                 />
               </LocalizationProvider>
             </FormGroup>
 
             <FormGroup sx={{ marginBottom: 4 }}>
               <TextField
+                fullWidth
                 id="duration"
+                name="duration"
                 label="Duration (in minutes)"
                 variant="outlined"
-                onChange={(e) => {
-                  setDuration(Number(e.target.value));
-                }}
                 type="number"
+                // formik stuff
+                value={formik.values.duration}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.duration && Boolean(formik.errors.duration)
+                }
+                helperText={formik.touched.duration && formik.errors.duration}
               />
             </FormGroup>
 
-            <Button type="submit" variant="outlined" sx={{ width: '100%' }}>
+            <Button type="submit" variant="outlined" fullWidth>
               Add
             </Button>
           </>
