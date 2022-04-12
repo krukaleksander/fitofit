@@ -8,6 +8,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { red } from '@mui/material/colors';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -23,6 +24,8 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
     [],
   );
   const [activitiesListLoaded, setActivitiesListLoaded] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   // ================================================================
 
@@ -53,10 +56,14 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
     getActivity();
 
     async function getActivity() {
-      const res = await fetch(`${config.apiUrl}/exercises`);
-      const data = await res.json();
-      setActivitiesList(data);
-      setActivitiesListLoaded(true);
+      try {
+        const res = await fetch(`${config.apiUrl}/exercises`);
+        const data = await res.json();
+        setActivitiesList(data);
+        setActivitiesListLoaded(true);
+      } catch (err) {
+        setErrorMessage('Failed to fetch data from server');
+      }
     }
   }, []);
 
@@ -158,8 +165,24 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
             </Button>
           </>
         ) : (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {errorMessage ? (
+              <Typography
+                component="p"
+                sx={{ marginBottom: 4, color: red[500] }}
+              >
+                {errorMessage}
+              </Typography>
+            ) : (
+              <CircularProgress />
+            )}
           </Box>
         )}
       </Box>
