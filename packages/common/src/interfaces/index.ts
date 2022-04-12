@@ -1,1 +1,1 @@
-export * from './IHello';
+export * from './IExerciseFromServer';
