@@ -1,6 +1,6 @@
 import {
   IsBoolean,
-  IsDate,
+  IsDateString,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -28,7 +28,7 @@ export class ActivityDto {
   name: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   start: Date;
 
   @IsNotEmpty()
