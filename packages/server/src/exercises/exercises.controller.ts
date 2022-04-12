@@ -11,7 +11,7 @@ export class ExercisesController {
     return this.exerciseService.getExercises();
   }
   @Post('new')
-  addAcivity(@Body() activity) {
+  addActivity(@Body() activity) {
     return this.exerciseService.addActivity(activity);
   }
 }
