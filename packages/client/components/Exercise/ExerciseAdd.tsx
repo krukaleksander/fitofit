@@ -13,7 +13,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { IExerciseFromServer } from 'common';
+import { IActivity, IExerciseFromServer } from 'common';
 import config from '~/config';
 
 interface ExerciseAddProps {}
