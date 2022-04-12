@@ -35,5 +35,10 @@ describe('ExercisesService', () => {
         });
       });
     });
+    describe('historical activities', () => {
+      it('returns historical activity for user ', () => {
+        expect(service.getHistoricalActivities()).toEqual({});
+      });
+    });
   });
 });
