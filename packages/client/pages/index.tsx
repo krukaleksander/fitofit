@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import { Typography } from '@mui/material';
 import config from '~/config';
-import ExerciseAdd from '~/components/Exercise/ExerciseAdd';
 
 const HomePage: NextPage = () => {
   return (
@@ -13,8 +12,6 @@ const HomePage: NextPage = () => {
       >
         {config.app.name}
       </Typography>
-
-      <ExerciseAdd />
     </>
   );
 };

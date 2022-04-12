@@ -16,9 +16,11 @@ import * as yup from 'yup';
 import { IActivity, IExerciseFromServer } from 'common';
 import config from '~/config';
 
-interface ExerciseAddProps {}
+interface ExerciseAddProps {
+  handleClose: () => void;
+}
 
-const ExerciseAdd: FC<ExerciseAddProps> = () => {
+const ExerciseAdd: FC<ExerciseAddProps> = ({ handleClose }) => {
   const [activitiesList, setActivitiesList] = useState<IExerciseFromServer[]>(
     [],
   );
@@ -87,6 +89,8 @@ const ExerciseAdd: FC<ExerciseAddProps> = () => {
 
       // TODO (hub33k): reset form properly
       resetForm();
+
+      handleClose();
     },
   });
 

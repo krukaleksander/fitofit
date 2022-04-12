@@ -3,6 +3,7 @@ import Head from 'next/head';
 import config from '~/config';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from '~/config/theme';
+import '~/styles/global.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
