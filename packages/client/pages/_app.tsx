@@ -1,8 +1,10 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import config from '~/config';
+import { Provider as ReduxProvider } from 'react-redux';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import config from '~/config';
 import theme from '~/config/theme';
+import store from '~/redux/store';
 import '~/styles/global.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -15,11 +17,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="description" content={`${config.app.name}`} />
       </Head>
 
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+      <ReduxProvider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
 
-        <Component {...pageProps} />
-      </ThemeProvider>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </ReduxProvider>
     </>
   );
 }
