@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { AuthEntity } from '../auth/auth.entity';
-import { ActivityEntity } from '../exercises/activity.entity';
+import { AuthEntity } from './src/auth/auth.entity';
+import { ActivityEntity } from './src/exercises/activity.entity';
 
 module.exports = [
   {
