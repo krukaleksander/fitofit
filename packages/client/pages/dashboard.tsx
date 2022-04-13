@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import config from '~/config';
 import ExerciseAdd from '~/components/Exercise/ExerciseAdd';
+import UserActivities from '~/components/UserActivities';
 
 const DashboardPage: NextPage = () => {
   // Modal state
@@ -30,55 +31,59 @@ const DashboardPage: NextPage = () => {
       >
         <AppBar position="sticky">
           <Toolbar>
-            <Container maxWidth="lg">
-              <Typography>{config.app.name}</Typography>
-            </Container>
-
-            <Button onClick={handleOpen}>Add exercise</Button>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
+            <Container
+              maxWidth="sm"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: '100%',
-                  bgcolor: 'background.paper',
-                  border: '2px solid #000',
-                  boxShadow: 24,
-                  p: 4,
-                }}
-              >
-                <Box
-                  sx={{
-                    maxWidth: 800,
-                    margin: '0 auto',
-                  }}
-                >
-                  <ExerciseAdd handleClose={handleClose} />
-                </Box>
-              </Box>
-            </Modal>
+              <Typography>{config.app.name}</Typography>
+              <Button onClick={handleOpen}>Add exercise</Button>
+            </Container>
           </Toolbar>
         </AppBar>
 
         <Container
-          maxWidth="md"
+          maxWidth="sm"
           sx={{
             padding: 4,
           }}
         >
-          <Typography component="p" variant="h5" sx={{ textAlign: 'center' }}>
-            This is awesome dashboard
-          </Typography>
-          <Button onClick={handleOpen}>Add exercise</Button>
+          <UserActivities />
         </Container>
       </Box>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '100%',
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Box
+            sx={{
+              maxWidth: 800,
+              margin: '0 auto',
+            }}
+          >
+            <ExerciseAdd handleClose={handleClose} />
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 };
