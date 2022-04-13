@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
           .valid('development', 'production', 'test')
           .default('development'),
         PORT: Joi.number().default(4000),
+        DATABASE_URL: Joi.string().required(),
       }),
       isGlobal: true,
     }),
