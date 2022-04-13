@@ -6,9 +6,6 @@ import { AppService } from './app.service';
 import { ExercisesModule } from './exercises/exercises.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ActivityEntity } from './exercises/activity.entity';
-import { AuthEntity } from './auth/auth.entity';
 
 @Module({
   imports: [
@@ -16,7 +13,6 @@ import { AuthEntity } from './auth/auth.entity';
       cache: true,
       envFilePath: ['.env', '.env.development', '.env.production', '.env.test'],
       validationSchema: Joi.object({
-        // General
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'test')
           .default('development'),
@@ -27,16 +23,6 @@ import { AuthEntity } from './auth/auth.entity';
     ExercisesModule,
     DatabaseModule,
     AuthModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5434,
-      username: 'postgres',
-      password: 'myPassword123',
-      database: 'fitofit',
-      entities: [ActivityEntity, AuthEntity],
-      synchronize: true,
-    }),
   ],
   controllers: [AppController],
   providers: [AppService],
