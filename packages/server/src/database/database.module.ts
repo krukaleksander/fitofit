@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActivityEntity } from '../exercises/activity.entity';
+import { AuthEntity } from '../auth/auth.entity';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { ActivityEntity } from '../exercises/activity.entity';
       username: 'postgres',
       password: 'myPassword123',
       database: 'fitofit',
-      entities: [ActivityEntity],
+      entities: [ActivityEntity, AuthEntity],
       synchronize: true,
     }),
   ],
