@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
+  CircularProgress,
   List,
   ListItem,
   ListItemAvatar,
@@ -11,6 +12,7 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+import { red } from '@mui/material/colors';
 import { IUserActivities, IUserActivity } from 'common';
 import config from '~/config';
 
@@ -43,7 +45,7 @@ const UserActivities: FC<UserActivitiesProps> = () => {
 
   return (
     <>
-      {activitiesLoaded && (
+      {activitiesLoaded ? (
         <Box>
           <Typography
             variant="h4"
@@ -162,6 +164,23 @@ const UserActivities: FC<UserActivitiesProps> = () => {
               </Paper>
             </Box>
           </Box>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {errorMessage ? (
+            <Typography component="p" sx={{ marginBottom: 4, color: red[500] }}>
+              {errorMessage}
+            </Typography>
+          ) : (
+            <CircularProgress />
+          )}
         </Box>
       )}
     </>
