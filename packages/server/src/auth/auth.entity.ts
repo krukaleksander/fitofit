@@ -4,9 +4,9 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 export class AuthEntity {
   @PrimaryGeneratedColumn()
   userID: number;
-  @Column()
+  @Column({ unique: true })
   login: string;
-  @Column()
+  @Column({ unique: true })
   email: string;
   @Column()
   password: string;

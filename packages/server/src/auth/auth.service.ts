@@ -24,7 +24,7 @@ export class AuthService {
         credentials: userCredentials,
       };
     } catch (err) {
-      return { status: 500, err };
+      return { status: 500, err: err.driverError.detail };
     }
   }
 }
