@@ -19,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
           .default('development'),
         PORT: Joi.number().default(4000),
       }),
+      isGlobal: true,
     }),
     ExercisesModule,
     DatabaseModule,
