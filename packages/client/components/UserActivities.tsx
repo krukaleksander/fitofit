@@ -112,37 +112,52 @@ const UserActivities: FC<UserActivitiesProps> = () => {
             <Box>
               <Paper>
                 <List>
-                  {activities.activities.map((activity: IUserActivity) => (
-                    <ListItemButton key={activity.activityID}>
-                      <ListItemIcon sx={{ fontSize: 20 }}>🔥</ListItemIcon>
-                      <ListItemText
-                        primaryTypographyProps={{
-                          fontSize: 14,
-                          fontWeight: 'medium',
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                          }}
+                  {activities.activities
+                    .sort((a: IUserActivity, b: IUserActivity) => {
+                      return (
+                        new Date(b.start).getTime() -
+                        new Date(a.start).getTime()
+                      );
+                    })
+                    .map((activity: IUserActivity) => {
+                      const isPast =
+                        new Date(activity.start).getTime() < Date.now();
+
+                      return (
+                        <ListItemButton
+                          key={activity.activityID}
+                          disabled={isPast}
                         >
-                          <Box component="span">{activity.name}</Box>
-                          <Box component="span">
-                            {new Date(activity.start).toLocaleString()}
-                          </Box>
-                        </Box>
-                        <Box
-                          sx={{
-                            color: 'text.secondary',
-                            marginTop: 0.5,
-                          }}
-                        >
-                          {activity.durationInMinutes} minutes
-                        </Box>
-                      </ListItemText>
-                    </ListItemButton>
-                  ))}
+                          <ListItemIcon sx={{ fontSize: 20 }}>🔥</ListItemIcon>
+                          <ListItemText
+                            primaryTypographyProps={{
+                              fontSize: 14,
+                              fontWeight: 'medium',
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                              }}
+                            >
+                              <Box component="span">{activity.name}</Box>
+                              <Box component="span">
+                                {new Date(activity.start).toLocaleString()}
+                              </Box>
+                            </Box>
+                            <Box
+                              sx={{
+                                color: 'text.secondary',
+                                marginTop: 0.5,
+                              }}
+                            >
+                              {activity.durationInMinutes} minutes
+                            </Box>
+                          </ListItemText>
+                        </ListItemButton>
+                      );
+                    })}
                 </List>
               </Paper>
             </Box>
