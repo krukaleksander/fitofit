@@ -43,18 +43,25 @@ const DashboardPage: NextPage = () => {
             >
               <Box
                 sx={{
-                  position: 'absolute' as 'absolute',
+                  position: 'absolute',
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
-                  width: 800,
+                  width: '100%',
                   bgcolor: 'background.paper',
                   border: '2px solid #000',
                   boxShadow: 24,
                   p: 4,
                 }}
               >
-                <ExerciseAdd handleClose={handleClose} />
+                <Box
+                  sx={{
+                    maxWidth: 800,
+                    margin: '0 auto',
+                  }}
+                >
+                  <ExerciseAdd handleClose={handleClose} />
+                </Box>
               </Box>
             </Modal>
           </Toolbar>
@@ -69,6 +76,7 @@ const DashboardPage: NextPage = () => {
           <Typography component="p" variant="h5" sx={{ textAlign: 'center' }}>
             This is awesome dashboard
           </Typography>
+          <Button onClick={handleOpen}>Add exercise</Button>
         </Container>
       </Box>
     </>
