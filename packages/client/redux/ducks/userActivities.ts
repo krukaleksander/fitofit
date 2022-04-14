@@ -10,15 +10,32 @@ export const fetchUserAllActivities = createAsyncThunk(
   'fitofit/fetchUserActivities',
   async () => {
     const res = await fetch(`${config.apiUrl}/exercises/user/activity`);
-    return res.json();
+    return await res.json();
   },
 );
 
-export const addExercise = createAsyncThunk(
+export const addExercise: any = createAsyncThunk(
   'fitofit/addExercise',
   async (activity: IUserActivity) => {
-    const res = await fetch(`${config.apiUrl}/exercises/user/activity`);
-    return res.json();
+    // const res = await fetch(`${config.apiUrl}/exercises/user/activity`);
+    // return res.json();
+
+    return await fetch(`${config.apiUrl}/exercises/new`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(activity),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
 );
 
@@ -26,6 +43,7 @@ export const addExercise = createAsyncThunk(
 
 interface State extends IUserActivities {
   isLoading: boolean;
+  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
   error: string | null;
 }
 
@@ -36,6 +54,7 @@ const initialState: State = {
   activities: [],
 
   isLoading: false,
+  status: 'idle',
   error: null,
 };
 
@@ -49,6 +68,9 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserAllActivities.fulfilled, (state, action) => {
+      return action.payload;
+    });
+    builder.addCase(addExercise.fulfilled, (state, action) => {
       state.activities.push(action.payload);
     });
   },

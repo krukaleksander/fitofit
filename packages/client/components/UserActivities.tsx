@@ -15,31 +15,34 @@ import {
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { IUserActivities, IUserActivity } from 'common';
-import config from '~/config';
+import { fetchUserAllActivities } from '~/redux/ducks/userActivities';
+import { useAppDispatch } from '~/redux/hooks';
 
 interface UserActivitiesProps {}
 
 const UserActivities: FC<UserActivitiesProps> = () => {
-  const [activities, setActivities] = useState<IUserActivities>({
+  const [userActivities, setUserActivities] = useState<IUserActivities>({
     totalDuration: 0,
     totalCalories: 0,
     caloriesToBurgers: 0,
     activities: [],
   });
-  const [activitiesLoaded, setActivitiesLoaded] = useState(false);
+  const [activitiesLoaded, setActivitiesLoaded] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getActivities();
 
     async function getActivities() {
       try {
-        const res = await fetch(`${config.apiUrl}/exercises/user/activity`);
-        const data = await res.json();
-        setActivities(data);
-        setActivitiesLoaded(true);
+        // TODO (hub33k): rerender this component when new exercise is added
+        // TODO (hub33k): for now use any; change it later
+        const response: any = await dispatch(fetchUserAllActivities()).unwrap();
+        setUserActivities(response);
       } catch (err) {
-        setErrorMessage('Failed to fetch data from server');
+        // setErrorMessage('Failed to fetch data from server');
       }
     }
   }, []);
@@ -86,7 +89,7 @@ const UserActivities: FC<UserActivitiesProps> = () => {
                       <Avatar>{/*<ImageIcon />*/}</Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={`${activities.totalCalories}`}
+                      primary={`${userActivities.totalCalories}`}
                       secondary="Total calories burnt"
                     />
                   </ListItem>
@@ -95,7 +98,7 @@ const UserActivities: FC<UserActivitiesProps> = () => {
                       <Avatar>{/*<ImageIcon />*/}</Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={`${activities.totalDuration}`}
+                      primary={`${userActivities.totalDuration}`}
                       secondary="Total workout time"
                     />
                   </ListItem>
@@ -104,7 +107,7 @@ const UserActivities: FC<UserActivitiesProps> = () => {
                       <Avatar>{/*<ImageIcon />*/}</Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={`${activities.caloriesToBurgers}`}
+                      primary={`${userActivities.caloriesToBurgers}`}
                       secondary="Calories to burgers"
                     />
                   </ListItem>
@@ -113,10 +116,10 @@ const UserActivities: FC<UserActivitiesProps> = () => {
             </Box>
 
             <Box>
-              {activities.activities.length ? (
+              {userActivities.activities.length ? (
                 <Paper>
                   <List>
-                    {activities.activities
+                    {Array.from(userActivities.activities)
                       .sort((a: IUserActivity, b: IUserActivity) => {
                         return (
                           new Date(b.start).getTime() -
