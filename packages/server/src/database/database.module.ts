@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ActivityEntity } from '../exercises/activity.entity';
-import { AuthEntity } from '../auth/auth.entity';
 import { getConfig } from '../ormconfig';
 import { ConfigService } from '@nestjs/config';
 
