@@ -15,6 +15,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { IActivity, IExerciseFromServer } from 'common';
 import config from '~/config';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface ExerciseAddProps {
   handleClose: () => void;
@@ -27,6 +28,36 @@ const ExerciseAdd: FC<ExerciseAddProps> = ({ handleClose }) => {
   const [activitiesListLoaded, setActivitiesListLoaded] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState('');
+
+  // react-query stuff
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async (request: IActivity) => {
+      return await fetch(`${config.apiUrl}/exercises/new`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          return data;
+        })
+        .catch((error) => {
+          console.error(error);
+          return error;
+        });
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries('userActivities');
+      },
+    },
+  );
 
   // ================================================================
 
@@ -63,29 +94,7 @@ const ExerciseAdd: FC<ExerciseAddProps> = ({ handleClose }) => {
         durationInMinutes: Number(values.duration),
         isDone: false,
       };
-
-      console.log(request);
-
-      fetch(`${config.apiUrl}/exercises/new`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request),
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong');
-          }
-        })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      mutation.mutate(request);
 
       // TODO (hub33k): reset form properly
       resetForm();
