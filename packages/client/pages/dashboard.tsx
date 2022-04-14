@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   AppBar,
   Box,
@@ -12,12 +12,26 @@ import {
 import config from '~/config';
 import ExerciseAdd from '~/components/Exercise/ExerciseAdd';
 import UserActivities from '~/components/UserActivities';
+import { useDispatch } from 'react-redux';
+import { fetchUserAllActivities } from '~/redux/ducks/userActivities';
 
 const DashboardPage: NextPage = () => {
+  // redux
+  const dispatch = useDispatch();
+
   // Modal state
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    fetch();
+
+    async function fetch() {
+      const response = await dispatch(fetchUserAllActivities());
+      console.log(response);
+    }
+  }, []);
 
   return (
     <>
