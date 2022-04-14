@@ -70,7 +70,6 @@ const HomePage: NextPage = () => {
             }}
           >
             <Box sx={{ mb: 8 }}>
-              ę
               <Typography variant="h2" sx={{ mb: 2 }}>
                 {config.app.name}
               </Typography>
