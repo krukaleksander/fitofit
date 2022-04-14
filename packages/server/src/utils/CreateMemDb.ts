@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm';
-import { ActivityEntity } from '../exercises/activity.entity';
-import { AuthEntity } from '../auth/auth.entity';
+import { ActivityEntity } from '../entities/activity.entity';
+import { AuthEntity } from '../entities/auth.entity';
 
 export async function createMemDB(entities) {
   return createConnection({

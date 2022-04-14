@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { AuthEntity } from './auth/auth.entity';
-import { ActivityEntity } from './exercises/activity.entity';
+import { AuthEntity } from './entities/auth.entity';
+import { ActivityEntity } from './entities/activity.entity';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 export const getConfig = (databaseUrl: string): PostgresConnectionOptions => ({

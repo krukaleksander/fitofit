@@ -3,7 +3,7 @@ import { RegisterCredentialsDto } from './dto/RegisterCredentials.dto';
 import * as argon from 'argon2';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AuthEntity } from './auth.entity';
+import { AuthEntity } from '../entities/auth.entity';
 import { LoginCredentialsDto } from './dto/LoginCredentials.dto';
 @Injectable()
 export class AuthService {

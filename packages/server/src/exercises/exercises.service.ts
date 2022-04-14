@@ -3,7 +3,7 @@ import { db as MOCKED_RESPONSE } from '../tempdb/db';
 import { ExerciseFromServerDto } from './dto/ExerciseFromServer.dto';
 import { ActivityDto } from './dto/Activity.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ActivityEntity } from './activity.entity';
+import { ActivityEntity } from '../entities/activity.entity';
 import { Repository } from 'typeorm';
 
 import { AllActivities } from './helpers/AllActivities';

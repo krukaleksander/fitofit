@@ -2,7 +2,7 @@ import { Connection, Repository } from 'typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExercisesService } from './exercises.service';
 import { db } from '../tempdb/db';
-import { ActivityEntity } from './activity.entity';
+import { ActivityEntity } from '../entities/activity.entity';
 import { createMemDB } from '../utils/CreateMemDb';
 
 describe('ExercisesService', () => {

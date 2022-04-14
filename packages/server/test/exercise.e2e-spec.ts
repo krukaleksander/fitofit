@@ -4,7 +4,7 @@ import * as request from 'supertest';
 import { ExercisesModule } from '../dist/exercises/exercises.module';
 import { ExercisesService } from '../dist/exercises/exercises.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ActivityEntity } from '../src/exercises/activity.entity';
+import { ActivityEntity } from '../src/entities/activity.entity';
 import { db } from '../src/tempdb/db';
 describe('ExerciseController (e2e)', () => {
   let app: INestApplication;

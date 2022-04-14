@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ActivityEntity } from '../exercises/activity.entity';
-import { AuthEntity } from './auth.entity';
+import { ActivityEntity } from '../entities/activity.entity';
+import { AuthEntity } from '../entities/auth.entity';
 
 @Module({
   providers: [AuthService],
