@@ -15,5 +15,6 @@ export const getConfig = (databaseUrl: string): PostgresConnectionOptions => ({
   logging: process.env.DATABASE_LOGGING === 'true',
 
   entities: [AuthEntity, ActivityEntity],
+
   migrationsTableName: 'migrations',
 });
