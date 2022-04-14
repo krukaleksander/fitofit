@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import Link from 'next/link';
 import { useState } from 'react';
 import {
   AppBar,
@@ -39,7 +40,12 @@ const DashboardPage: NextPage = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <Typography>{config.app.name}</Typography>
+              <Link href="/" passHref>
+                <Typography sx={{ cursor: 'pointer' }}>
+                  {config.app.name}
+                </Typography>
+              </Link>
+
               <Button onClick={handleOpen}>Add exercise</Button>
             </Container>
           </Toolbar>
