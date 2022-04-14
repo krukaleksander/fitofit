@@ -2,7 +2,7 @@
 
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '~/redux/store';
-import { IUserActivities, IUserActivity } from 'common';
+import { IActivity, IUserActivities, IUserActivity } from 'common';
 import config from '~/config';
 
 // usage: dispatch(fetchUserActivities())
@@ -32,6 +32,7 @@ export const addExercise: any = createAsyncThunk(
       })
       .then((data) => {
         console.log(data);
+        return data;
       })
       .catch((error) => {
         console.log(error);
@@ -42,9 +43,9 @@ export const addExercise: any = createAsyncThunk(
 // ================================================================
 
 interface State extends IUserActivities {
-  isLoading: boolean;
-  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string | null;
+  // isLoading: boolean;
+  // status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
+  // error: string | null;
 }
 
 const initialState: State = {
@@ -52,26 +53,33 @@ const initialState: State = {
   totalCalories: 0,
   caloriesToBurgers: 0,
   activities: [],
-
-  isLoading: false,
-  status: 'idle',
-  error: null,
 };
 
 const slice = createSlice({
   name: 'fitofit/userActivities',
   initialState,
   reducers: {
+    getUserActivity(state, action: PayloadAction<IUserActivities>) {
+      state = action.payload;
+    },
     addActivity(state, action: PayloadAction<IUserActivity>) {
       state.activities.push(action.payload);
     },
   },
   extraReducers: (builder) => {
+    // fetchUserAllActivities
+    builder.addCase(fetchUserAllActivities.pending, (state, action) => {});
     builder.addCase(fetchUserAllActivities.fulfilled, (state, action) => {
+      state = action.payload;
       return action.payload;
     });
+    builder.addCase(fetchUserAllActivities.rejected, (state, action) => {});
+
+    // addExercise
     builder.addCase(addExercise.fulfilled, (state, action) => {
-      state.activities.push(action.payload);
+      console.log('extra reducer', action.payload.activity);
+      state.activities.push(action.payload.activity);
+      // return action.payload.activity;
     });
   },
 });

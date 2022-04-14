@@ -27,7 +27,7 @@ const UserActivities: FC<UserActivitiesProps> = () => {
     caloriesToBurgers: 0,
     activities: [],
   });
-  const [activitiesLoaded, setActivitiesLoaded] = useState(true);
+  const [activitiesLoaded, setActivitiesLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const dispatch = useAppDispatch();
@@ -41,11 +41,13 @@ const UserActivities: FC<UserActivitiesProps> = () => {
         // TODO (hub33k): for now use any; change it later
         const response: any = await dispatch(fetchUserAllActivities()).unwrap();
         setUserActivities(response);
+        setActivitiesLoaded(true);
       } catch (err) {
-        // setErrorMessage('Failed to fetch data from server');
+        console.error(err);
+        setErrorMessage('Failed to fetch data from server');
       }
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

@@ -13,10 +13,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { IActivity, IExerciseFromServer } from 'common';
+import { IActivity, IExerciseFromServer, IUserActivity } from 'common';
 import config from '~/config';
 import { useDispatch } from 'react-redux';
-import { addExercise } from '~/redux/ducks/userActivities';
+import { addActivity, addExercise } from '~/redux/ducks/userActivities';
 
 interface ExerciseAddProps {
   handleClose: () => void;
