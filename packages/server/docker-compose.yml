@@ -7,5 +7,5 @@ services:
     environment:
       POSTGRESS_USER: postgres
       POSTGRES_PASSWORD: myPassword123
-      POSTGRES_DB: fitofit
-      networks: fitofit
+      POSTGRES_DB: fitofit2
+      networks: fitofit2
