@@ -1,30 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { ExercisesModule } from '../dist/exercises/exercises.module';
-import { ExercisesService } from '../dist/exercises/exercises.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ActivityEntity } from '../src/entities/activity.entity';
-import { db } from '../src/tempdb/db';
-describe('ExerciseController (e2e)', () => {
+import { AppModule } from './../src/app.module';
+import { db } from '../dist/tempdb/db';
+
+describe('Eexercises (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        ExercisesModule,
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: 'localhost',
-          port: 5434,
-          username: 'postgres',
-          password: 'myPassword123',
-          database: 'fitofit',
-          entities: [ActivityEntity],
-          logging: true,
-        }),
-      ],
-      providers: [ExercisesService],
+      imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
