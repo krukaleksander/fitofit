@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateLogsTable1649849370000 implements MigrationInterface {
-  name = 'CreateLogsTable1649849370000';
+export class CreateAuth1649934124883 implements MigrationInterface {
+  name = 'CreateAuth1649934124883';
 
   table = new Table({
     name: 'auth',
