@@ -30,6 +30,30 @@ export async function register(body: {
     });
 }
 
+export async function login(body: { login: string; password: string }) {
+  return await fetch(`${config.apiUrl}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong');
+      }
+    })
+    .then((data) => {
+      // console.log(data);
+      return data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 // Helpers
 
 interface IApiOptions {
