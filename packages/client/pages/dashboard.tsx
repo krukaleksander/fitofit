@@ -4,21 +4,27 @@ import { useState } from 'react';
 import {
   AppBar,
   Box,
+  Button,
+  Container,
+  Modal,
   Toolbar,
   Typography,
-  Container,
-  Button,
-  Modal,
 } from '@mui/material';
 import config from '~/config';
 import ExerciseAdd from '~/components/Exercise/ExerciseAdd';
 import UserActivities from '~/components/UserActivities';
+import { useQuery } from 'react-query';
 
 const DashboardPage: NextPage = () => {
   // Modal state
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // react-query stuff
+  const userQuery = useQuery<{ userID: number; login: string; email: string }>(
+    'user',
+  );
 
   return (
     <>
@@ -47,6 +53,7 @@ const DashboardPage: NextPage = () => {
               </Link>
 
               <Button onClick={handleOpen}>Add exercise</Button>
+              <Button onClick={() => {}}>Log out</Button>
             </Container>
           </Toolbar>
         </AppBar>
@@ -57,6 +64,9 @@ const DashboardPage: NextPage = () => {
             padding: 4,
           }}
         >
+          {userQuery.data && (
+            <Typography>Hello {userQuery.data.login}</Typography>
+          )}
           <UserActivities />
         </Container>
       </Box>
