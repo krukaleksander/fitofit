@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import {
+  Alert,
   Avatar,
   Box,
   CircularProgress,
@@ -112,56 +113,67 @@ const UserActivities: FC<UserActivitiesProps> = () => {
             </Box>
 
             <Box>
-              <Paper>
-                <List>
-                  {activities.activities
-                    .sort((a: IUserActivity, b: IUserActivity) => {
-                      return (
-                        new Date(b.start).getTime() -
-                        new Date(a.start).getTime()
-                      );
-                    })
-                    .map((activity: IUserActivity) => {
-                      const isPast =
-                        new Date(activity.start).getTime() < Date.now();
+              {activities.activities.length ? (
+                <Paper>
+                  <List>
+                    {activities.activities
+                      .sort((a: IUserActivity, b: IUserActivity) => {
+                        return (
+                          new Date(b.start).getTime() -
+                          new Date(a.start).getTime()
+                        );
+                      })
+                      .map((activity: IUserActivity) => {
+                        const isPast =
+                          new Date(activity.start).getTime() < Date.now();
 
-                      return (
-                        <ListItemButton
-                          key={activity.activityID}
-                          disabled={isPast}
-                        >
-                          <ListItemIcon sx={{ fontSize: 20 }}>🔥</ListItemIcon>
-                          <ListItemText
-                            primaryTypographyProps={{
-                              fontSize: 14,
-                              fontWeight: 'medium',
-                            }}
+                        return (
+                          <ListItemButton
+                            key={activity.activityID}
+                            disabled={isPast}
                           >
-                            <Box
-                              sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
+                            <ListItemIcon sx={{ fontSize: 20 }}>
+                              🔥
+                            </ListItemIcon>
+                            <ListItemText
+                              primaryTypographyProps={{
+                                fontSize: 14,
+                                fontWeight: 'medium',
                               }}
                             >
-                              <Box component="span">{activity.name}</Box>
-                              <Box component="span">
-                                {new Date(activity.start).toLocaleString()}
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between',
+                                }}
+                              >
+                                <Box component="span">{activity.name}</Box>
+                                <Box component="span">
+                                  {new Date(activity.start).toLocaleString()}
+                                </Box>
                               </Box>
-                            </Box>
-                            <Box
-                              sx={{
-                                color: 'text.secondary',
-                                marginTop: 0.5,
-                              }}
-                            >
-                              {activity.durationInMinutes} minutes
-                            </Box>
-                          </ListItemText>
-                        </ListItemButton>
-                      );
-                    })}
-                </List>
-              </Paper>
+                              <Box
+                                sx={{
+                                  color: 'text.secondary',
+                                  marginTop: 0.5,
+                                }}
+                              >
+                                {activity.durationInMinutes} minutes
+                              </Box>
+                            </ListItemText>
+                          </ListItemButton>
+                        );
+                      })}
+                  </List>
+                </Paper>
+              ) : (
+                <>
+                  <Alert severity="warning">
+                    You have no exercises planned. Let&apos;s add one by
+                    clicking &quot;Add exercise&quot; at the appbar.
+                  </Alert>
+                </>
+              )}
             </Box>
           </Box>
         </Box>
