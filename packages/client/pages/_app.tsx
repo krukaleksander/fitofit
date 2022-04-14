@@ -1,11 +1,12 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { Provider as ReduxProvider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import config from '~/config';
 import theme from '~/config/theme';
-import store from '~/redux/store';
 import '~/styles/global.css';
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,13 +18,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="description" content={`${config.app.name}`} />
       </Head>
 
-      <ReduxProvider store={store}>
+      <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
 
           <Component {...pageProps} />
         </ThemeProvider>
-      </ReduxProvider>
+      </QueryClientProvider>
     </>
   );
 }
