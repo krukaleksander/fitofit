@@ -4,7 +4,7 @@ import * as argon from 'argon2';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthEntity } from './auth.entity';
-import { when } from 'joi';
+import { LoginCredentialsDto } from './dto/LoginCredentials.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -28,14 +28,14 @@ export class AuthService {
       return { status: 500, err: err.driverError.detail };
     }
   }
-  async loginUser(dto: RegisterCredentialsDto) {
+  async loginUser(dto: LoginCredentialsDto) {
     const user = await this.authRepository.findOne({
       where: { login: dto.login },
     });
-    if (!user) throw new ForbiddenException('Credentials incorrecrt');
+    if (!user) throw new ForbiddenException('There is no user with this login');
 
     const passwordMatch = await argon.verify(user.password, dto.password);
-    if (!passwordMatch) throw new ForbiddenException('Credentials incorrecrt');
-    return user;
+    if (!passwordMatch) throw new ForbiddenException('Password incorrecrt');
+    return { msg: 'Logged in', user };
   }
 }
