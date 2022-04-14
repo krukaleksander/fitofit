@@ -16,6 +16,10 @@ export class CreateAuth1649934124883 implements MigrationInterface {
         type: 'text',
       },
       {
+        name: 'email',
+        type: 'text',
+      },
+      {
         name: 'password',
         type: 'text',
       },

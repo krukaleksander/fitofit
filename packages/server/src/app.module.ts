@@ -11,7 +11,8 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot({
       cache: true,
-      envFilePath: ['.env', '.env.development', '.env.production', '.env.test'],
+      // envFilePath: ['.env', '.env.development', '.env.production', '.env.test'],
+      envFilePath: [`.env.${process.env.NODE_ENV || 'development'}`, '.env'],
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'test')
