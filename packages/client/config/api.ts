@@ -39,11 +39,7 @@ export async function login(body: { login: string; password: string }) {
     body: JSON.stringify(body),
   })
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Something went wrong');
-      }
+      return response.json();
     })
     .then((data) => {
       // console.log(data);

@@ -21,8 +21,8 @@ const LoginForm: FC<LoginFormProps> = () => {
     }),
     onSubmit: async (values, { resetForm }) => {
       const res = await login(values);
-      if (res.err) {
-        setError(res.err);
+      if (res.message) {
+        setError(res.message);
         setSuccessMessage(null);
       } else {
         setError(null);
