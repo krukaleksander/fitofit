@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import { FC, useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -26,8 +27,12 @@ const LoginForm: FC<LoginFormProps> = () => {
         setSuccessMessage(null);
       } else {
         setError(null);
-        setSuccessMessage(res.msg);
+        setSuccessMessage(`${res.msg}. Redirecting to dashboard.`);
         resetForm();
+
+        setTimeout(() => {
+          Router.push('/dashboard');
+        }, 3000);
       }
     },
   });
