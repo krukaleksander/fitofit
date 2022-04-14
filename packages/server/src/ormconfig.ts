@@ -10,7 +10,7 @@ export const getConfig = (databaseUrl: string): PostgresConnectionOptions => ({
   url: databaseUrl,
   schema: 'public',
 
-  synchronize: false,
+  synchronize: true,
   migrationsRun: true,
 
   logging: process.env.DATABASE_LOGGING === 'true',
