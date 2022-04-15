@@ -14,24 +14,20 @@ const LoginForm: FC<LoginFormProps> = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const queryClient = useQueryClient();
-  const loginMutation = useMutation(
-    async (request: IUser) => {
-      return await login(request);
+  const loginMutation = useMutation(login, {
+    onSuccess: (data) => {
+      // TODO (hub33k): save user to state
+      // const dataToSave = {
+      //   userID: data.user.userID,
+      //   login: data.user.login,
+      //   email: data.user.email,
+      // };
+      // queryClient.setQueryData('user', dataToSave);
+      // Invalidate and refetch
+      // queryClient.invalidateQueries('user');
+      // return data;
     },
-    {
-      onSuccess: (data) => {
-        const dataToSave = {
-          userID: data.user.userID,
-          login: data.user.login,
-          email: data.user.email,
-        };
-        queryClient.setQueryData('user', dataToSave);
-
-        // Invalidate and refetch
-        queryClient.invalidateQueries('user');
-      },
-    },
-  );
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -43,22 +39,20 @@ const LoginForm: FC<LoginFormProps> = () => {
       password: yup.string().required('Password is required'),
     }),
     onSubmit: async (values, { resetForm }) => {
-      await loginMutation.mutate(values);
-      console.log(loginMutation.data);
+      loginMutation.mutate(values);
 
-      // if (res.message) {
-      //   setError(res.message);
-      //   setSuccessMessage(null);
-      // } else {
-      //   setError(null);
-      //   setSuccessMessage(`${res.msg}. Redirecting to dashboard.`);
-      //   resetForm();
-      //
-      //   setTimeout(() => {
-      //     Router.push('/dashboard');
-      //   }, 3000);
-      // }
-      Router.push('/dashboard');
+      if (loginMutation.data.message) {
+        setError(loginMutation.data.message);
+        setSuccessMessage(null);
+      } else {
+        setError(null);
+        setSuccessMessage(
+          `${loginMutation.data.msg}. Redirecting to dashboard.`,
+        );
+        resetForm();
+
+        setTimeout(() => Router.push('/dashboard'), 3000);
+      }
     },
   });
 

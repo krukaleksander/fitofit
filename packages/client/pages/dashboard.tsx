@@ -22,9 +22,9 @@ const DashboardPage: NextPage = () => {
   const handleClose = () => setOpen(false);
 
   // react-query stuff
-  const userQuery = useQuery<{ userID: number; login: string; email: string }>(
-    'user',
-  );
+  // const userQuery = useQuery<{ userID: number; login: string; email: string }>(
+  //   'user',
+  // );
 
   return (
     <>
@@ -53,7 +53,9 @@ const DashboardPage: NextPage = () => {
               </Link>
 
               <Button onClick={handleOpen}>Add exercise</Button>
-              <Button onClick={() => {}}>Log out</Button>
+              <Button disabled onClick={() => {}}>
+                Log out
+              </Button>
             </Container>
           </Toolbar>
         </AppBar>
@@ -64,9 +66,9 @@ const DashboardPage: NextPage = () => {
             padding: 4,
           }}
         >
-          {userQuery.data && (
-            <Typography>Hello {userQuery.data.login}</Typography>
-          )}
+          {/*{userQuery.data && (*/}
+          {/*  <Typography>Hello {userQuery.data.login}</Typography>*/}
+          {/*)}*/}
           <UserActivities />
         </Container>
       </Box>

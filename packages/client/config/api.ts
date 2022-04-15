@@ -47,6 +47,7 @@ export async function login(body: { login: string; password: string }) {
     })
     .catch((error) => {
       console.error(error);
+      return error;
     });
 }
 
