@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import {
   Avatar,
   Box,
@@ -15,106 +15,123 @@ import {
 import { red } from '@mui/material/colors';
 import { IUserActivities, IUserActivity } from 'common';
 import config from '~/config';
+import { useQuery } from 'react-query';
 
 interface UserActivitiesProps {}
 
 const UserActivities: FC<UserActivitiesProps> = () => {
-  const [activities, setActivities] = useState<IUserActivities>({
-    totalDuration: 0,
-    totalCalories: 0,
-    caloriesToBurgers: 0,
-    activities: [],
-  });
-  const [activitiesLoaded, setActivitiesLoaded] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    getActivities();
-
-    async function getActivities() {
+  const { isLoading, error, data, status } = useQuery<IUserActivities, Error>(
+    'userActivities',
+    async () => {
       try {
         const res = await fetch(`${config.apiUrl}/exercises/user/activity`);
-        const data = await res.json();
-        setActivities(data);
-        setActivitiesLoaded(true);
-      } catch (err) {
-        setErrorMessage('Failed to fetch data from server');
+        return await res.json();
+      } catch (error) {
+        console.error(error);
+        return error;
       }
-    }
-  }, []);
+    },
+  );
+
+  if (isLoading) {
+    return (
+      <>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </>
+    );
+  }
+
+  if (status === 'error') {
+    return (
+      <>
+        <Typography component="p" sx={{ marginBottom: 4, color: red[500] }}>
+          An error has occurred: &quot;{error.message}&quot;
+        </Typography>
+      </>
+    );
+  }
 
   return (
     <>
-      {activitiesLoaded ? (
-        <Box>
-          <Typography
-            variant="h4"
-            component="h1"
-            sx={{ textAlign: 'center', margin: 4 }}
-          >
-            User Activities
-          </Typography>
+      <Box>
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{ textAlign: 'center', margin: 4 }}
+        >
+          User Activities
+        </Typography>
 
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
+              marginBottom: 4,
             }}
           >
-            <Box
+            <Paper
               sx={{
-                marginBottom: 4,
+                padding: 2,
               }}
             >
-              <Paper
+              <Typography gutterBottom variant="h5" component="div">
+                Summary
+              </Typography>
+              <List
                 sx={{
-                  padding: 2,
+                  width: '100%',
                 }}
               >
-                <Typography gutterBottom variant="h5" component="div">
-                  Summary
-                </Typography>
-                <List
-                  sx={{
-                    width: '100%',
-                  }}
-                >
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>{/*<ImageIcon />*/}</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={`${activities.totalCalories}`}
-                      secondary="Total calories burnt"
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>{/*<ImageIcon />*/}</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={`${activities.totalDuration}`}
-                      secondary="Total workout time"
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>{/*<ImageIcon />*/}</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={`${activities.caloriesToBurgers}`}
-                      secondary="Calories to burgers"
-                    />
-                  </ListItem>
-                </List>
-              </Paper>
-            </Box>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>{/*<ImageIcon />*/}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${data?.totalCalories}`}
+                    secondary="Total calories burnt"
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>{/*<ImageIcon />*/}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${data?.totalDuration}`}
+                    secondary="Total workout time"
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>{/*<ImageIcon />*/}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${data?.caloriesToBurgers}`}
+                    secondary="Calories to burgers"
+                  />
+                </ListItem>
+              </List>
+            </Paper>
+          </Box>
 
-            <Box>
+          <Box>
+            {data?.activities.length ? (
               <Paper>
                 <List>
-                  {activities.activities
+                  {data?.activities
                     .sort((a: IUserActivity, b: IUserActivity) => {
                       return (
                         new Date(b.start).getTime() -
@@ -162,27 +179,14 @@ const UserActivities: FC<UserActivitiesProps> = () => {
                     })}
                 </List>
               </Paper>
-            </Box>
+            ) : (
+              <>
+                <Typography>No activities yet</Typography>
+              </>
+            )}
           </Box>
         </Box>
-      ) : (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {errorMessage ? (
-            <Typography component="p" sx={{ marginBottom: 4, color: red[500] }}>
-              {errorMessage}
-            </Typography>
-          ) : (
-            <CircularProgress />
-          )}
-        </Box>
-      )}
+      </Box>
     </>
   );
 };

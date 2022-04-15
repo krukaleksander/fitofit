@@ -4,12 +4,30 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Alert, Box, Button, TextField, Typography } from '@mui/material';
 import { login } from '~/config/api';
+import { useMutation, useQueryClient } from 'react-query';
+import { IUser } from 'common';
 
 interface LoginFormProps {}
 
 const LoginForm: FC<LoginFormProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const queryClient = useQueryClient();
+  const loginMutation = useMutation(login, {
+    onSuccess: (data) => {
+      // TODO (hub33k): save user to state
+      // const dataToSave = {
+      //   userID: data.user.userID,
+      //   login: data.user.login,
+      //   email: data.user.email,
+      // };
+      // queryClient.setQueryData('user', dataToSave);
+      // Invalidate and refetch
+      // queryClient.invalidateQueries('user');
+      // return data;
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -21,18 +39,19 @@ const LoginForm: FC<LoginFormProps> = () => {
       password: yup.string().required('Password is required'),
     }),
     onSubmit: async (values, { resetForm }) => {
-      const res = await login(values);
-      if (res.message) {
-        setError(res.message);
+      loginMutation.mutate(values);
+
+      if (loginMutation.data.message) {
+        setError(loginMutation.data.message);
         setSuccessMessage(null);
       } else {
         setError(null);
-        setSuccessMessage(`${res.msg}. Redirecting to dashboard.`);
+        setSuccessMessage(
+          `${loginMutation.data.msg}. Redirecting to dashboard.`,
+        );
         resetForm();
 
-        setTimeout(() => {
-          Router.push('/dashboard');
-        }, 3000);
+        setTimeout(() => Router.push('/dashboard'), 3000);
       }
     },
   });
