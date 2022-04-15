@@ -9,6 +9,9 @@ describe('ExercisesController', () => {
     getExercises: jest.fn(() => {
       return MOCKED_RESPONSE;
     }),
+    addActivity: jest.fn((dto) => {
+      return { status: 200, msg: 'Dodano zadanie', activity: dto };
+    }),
   };
 
   beforeEach(async () => {
@@ -28,5 +31,20 @@ describe('ExercisesController', () => {
   });
   it('should return db of possible exercises', () => {
     expect(controller.getExercises()).toEqual(MOCKED_RESPONSE);
+  });
+  it('should add new activity', () => {
+    const activity = {
+      durationInMinutes: 30,
+      exerciseID: 2,
+      isDone: false,
+      name: 'Bieganie',
+      start: new Date(),
+      userID: 10,
+    };
+    expect(controller.addActivity(activity)).toEqual({
+      status: 200,
+      msg: 'Dodano zadanie',
+      activity,
+    });
   });
 });
