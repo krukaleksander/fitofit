@@ -33,4 +33,13 @@ describe('Auth (e2e)', () => {
       })
       .expect(201);
   });
+  it('login fails (got 403 Forbidden) with bad credentials /auth/login (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        login: 'somebody',
+        password: 'somepassword',
+      })
+      .expect(403);
+  });
 });
