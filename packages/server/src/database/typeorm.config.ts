@@ -26,14 +26,13 @@ module.exports = [
     name: 'test',
     type: 'postgres',
     schema: 'public',
-
+    keepConnectionAlive: true,
     synchronize: false,
     migrationsRun: true,
 
     logging: process.env.DATABASE_LOGGING === 'true',
 
     autoLoadEntities: true,
-
     entities: ['./src/**/*.entity.ts'], // tests run on TS directly
     migrations: ['./src/**/migrations/*.ts'],
     migrationsTableName: 'migrations',
