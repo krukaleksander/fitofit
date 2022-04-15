@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 import { db } from '../dist/tempdb/db';
-import { cleanupBeforeEachSpec } from '../dist/database/DatabaseCleaner';
 
 describe('Eexercises (e2e)', () => {
   let app: INestApplication;
@@ -34,7 +33,7 @@ describe('Eexercises (e2e)', () => {
         start: new Date(),
         userID: 10,
       })
-      .expect(200);
+      .expect(201);
   });
   afterAll(async () => {
     await app.close();
