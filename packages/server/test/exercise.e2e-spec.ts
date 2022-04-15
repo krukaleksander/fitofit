@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { db } from '../dist/tempdb/db';
+import { cleanupBeforeEachSpec } from '../dist/database/DatabaseCleaner';
 
 describe('Eexercises (e2e)', () => {
   let app: INestApplication;
@@ -21,5 +22,21 @@ describe('Eexercises (e2e)', () => {
       .get('/exercises')
       .expect(200)
       .expect(db);
+  });
+  it('/exercises/new [Post]', async () => {
+    return request(app.getHttpServer())
+      .post('/exercises/new')
+      .send({
+        durationInMinutes: 30,
+        exerciseID: 2,
+        isDone: false,
+        name: 'Bieganie',
+        start: new Date(),
+        userID: 10,
+      })
+      .expect(200);
+  });
+  afterAll(async () => {
+    await app.close();
   });
 });
