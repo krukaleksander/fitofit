@@ -35,7 +35,7 @@ describe('Eexercises (e2e)', () => {
       })
       .expect(201);
   });
-  it(' returns historical activities exercises/user/activity [Get]', async () => {
+  it.skip(' returns historical activities exercises/user/activity [Get]', async () => {
     const { body: response } = await request(app.getHttpServer())
       .get('/exercises/user/activity')
       .send();
